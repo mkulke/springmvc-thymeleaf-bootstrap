@@ -8,6 +8,8 @@ import org.springframework.ui.Model;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 
 @Controller
 @RequestMapping("/")
@@ -21,8 +23,16 @@ public class HelloController {
 		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);        
 		String formattedDate = dateFormat.format(date);
 		model.addAttribute("currentTime", formattedDate);
+    
+    String hostname;
+    try {
+      hostname = InetAddress.getLocalHost().getHostName();
+    } catch (UnknownHostException e) {
+      hostname = "unknown";
+    }
 
-		return "hello";
+    model.addAttribute("hostname", hostname);
+
+    return "hello";
 	}
-
 }
